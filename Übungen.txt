@@ -1,0 +1,168 @@
+Prepare GitHub
+==============
+Login https://github.com
+User: thomaswetzler
+https://github.com/thomaswetzler/book-helloworld
+  -> Clone https://gitlab.com/appagile-workshop-examples/ex-insults-app
+
+
+
+Login to Appagile
+=================
+URL: https://master-azp18.appagile.de/console/
+    -> ? -> Command Line Tools
+oc login https://master-azp18.appagile.de:8443 --token=xlmAoTk7S4zYy4jsubDHD_m5brRsQvQ4RH2WMj_uP-Q
+oc new-project ex-insults-app --display-name="Elizabethan Insult Application"
+
+Base Image
+==========
+oc get is -n openshift
+sudo docker search openshift --limit 100 | grep wildfly
+
+Build & Deploy App
+==================
+oc new-app openshift/wildfly-100-centos7:latest~<github URL> --name='insults'
+oc new-app openshift/wildfly-100-centos7:latest~https://github.com/thomaswetzler/insults-app.git --name='insults'
+oc logs -f bc/insults 
+   oder Oberfläche: Builds -> insults -> #1 -> logs
+oc expose service insults
+   oder Oberfläche: Applications -> Services -> insults -> Actions -> Create Route
+oc get routes
+   oder Oberfläche
+
+Test Application
+================
+Webbrowser Internet
+   URL aus oc get routes
+
+Änderung am Coding
+==================
+git clone https://github.com/thomaswetzler/insults-app.git
+cd insults-app/src/main/java/org/openshift/
+vi InsultGenerator.java
+git add *
+git commit -m "Change in Java File"
+git push origin master
+oc start-build insults
+
+Jmeter
+======
+wget http://mirror.23media.de/apache/jmeter/binaries/apache-jmeter-4.0.tgz
+gzip -d apache-jmeter-4.0.tgz
+tar -xvf apache-jmeter-4.0.tar
+sudo apt-get install default-jre
+sudo vi /etc/environment
+    JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64/"
+source /etc/environment
+Starten auf Konsole
+
+Autoscaling
+===========
+Oberfläche 
+   Applications->Deployments->insults
+       Configuration->autoscaling
+   Applications->Deployments->insults
+       #2 -> Roll Back
+
+DB Pod hinzufügen
+=================
+Oberfläche
+-> Add to Project
+	Search "Postgresql"
+	DBStorage -> Postgresql Persistant 
+Field Name			What to enter	Description
+Memory limit			512Mi		Since this is a small database, we only need 512 megabytes of memory.
+Database service name		postgresql	The name of the resulting OpenShift service.
+PostgreSQL user			insult		The username that has permission to use the database.
+PostgreSQL password		insult		The password for the user.
+PostgreSQL database name	insults		The name of the initial database that will be created.
+Volume Capacity			1Gi
+
+Assign DB to application
+========================
+oc env dc insults -e POSTGRESQL_USER=insult -e PGPASSWORD=insult -e POSTGRESQL_DATABASE=insults
+
+Create Schema & Entries
+=======================
+oc get pods
+oc rsh <postgresql pod name>
+	cd /tmp
+	curl https://raw.githubusercontent.com/thomaswetzler/insults-app/master/insults.sql > insults.sql
+	psql -h $POSTGRESQL_SERVICE_HOST -p $POSTGRESQL_SERVICE_PORT -U $POSTGRESQL_USER $POSTGRESQL_DATABASE < insults.sql	
+	psql insults
+	\dt
+	select * from noun;
+	\q
+
+
+Anpassen Application
+====================
+git clone https://github.com/thomaswetzler/insults-app.git
+copy...
+git commit pom.xml -m "add postgresql connection"
+git commit src/main/java/org/openshift/InsultGenerator.java -m "add postgresql connection"
+git push origin master
+
+oder:
+git clone -b exercise2 https://github.com/thomaswetzler/insults-app.git
+cd insults-app
+git checkout master
+git push origin master
+
+Redeploy
+========
+oc start-build insults
+
+Delete all
+==========
+oc delete all --all
+
+SelfHealing
+===========
+$ oc get pods
+NAME                           READY     STATUS      RESTARTS   AGE
+first-nodejs-example-1-35vx7   1/1       Running     0          2m
+first-nodejs-example-1-59gyi   1/1       Running     0          4m
+first-nodejs-example-1-build   0/1       Completed   0          20h
+first-nodejs-example-1-n5ozj   1/1       Running     0          3m
+Now let’s see, what happens, if we loose (delete) one of the pods.
+
+$ oc delete pod first-nodejs-example-1-n5ozj
+pod "first-nodejs-example-1-n5ozj" deleted
+$ oc get pods
+NAME                           READY     STATUS      RESTARTS   AGE
+first-nodejs-example-1-35vx7   1/1       Running     0          4m
+first-nodejs-example-1-59gyi   1/1       Running     0          6m
+first-nodejs-example-1-build   0/1       Completed   0          20h
+first-nodejs-example-1-ezpn3   1/1       Running     0          34s
+
+
+
+Shell Script
+============
+./OpenShiftTraining.sh -f install_openshifttools -t wCUmMGD4VFMQ1VN3KgV9Fn74rNP5ij3xLw_qjD4XXko
+./OpenShiftTraining.sh -f exercises1 -t wCUmMGD4VFMQ1VN3KgV9Fn74rNP5ij3xLw_qjD4XXko
+./OpenShiftTraining.sh -f exercises2 -t wCUmMGD4VFMQ1VN3KgV9Fn74rNP5ij3xLw_qjD4XXko
+./OpenShiftTraining.sh -f delete -t wCUmMGD4VFMQ1VN3KgV9Fn74rNP5ij3xLw_qjD4XXko
+./OpenShiftTraining.sh -f installjmeter -t wCUmMGD4VFMQ1VN3KgV9Fn74rNP5ij3xLw_qjD4XXko
+
+Git
+===
+
+Create new Branch
+=================
+git clone https://github.com/thomaswetzler/insults-app.git
+cd insults-app
+git checkout -b exercise2
+git checkout exercise2
+cp exercise2/pom.xml .
+cp exercise2/InsultGenerator.java src/main/java/org/openshift/InsultGenerator.java
+git push origin exercise2
+git branch
+
+git clone -b exercise2 https://github.com/thomaswetzler/insults-app.git
+git commit pom.xml -m "add postgresql connection"
+git commit src/main/java/org/openshift/InsultGenerator.java -m "add postgresql connection"
+git push origin exercise2
+
+
