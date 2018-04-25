@@ -7,6 +7,11 @@ https://github.com/thomaswetzler/book-helloworld
 
 
 
+Download OC Tools
+=================
+https://github.com/openshift/origin/releases/download/v3.9.0/openshift-origin-client-tools-v3.9.0-191fece-linux-64bit.tar.gz
+
+
 Login to Appagile
 =================
 URL: https://master-azp18.appagile.de/console/
