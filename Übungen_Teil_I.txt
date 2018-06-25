@@ -21,13 +21,13 @@ oc new-project ex-insults-app --display-name="Elizabethan Insult Application"
 3 - Erste Web Anwendung
 =======================
 
-Base Image
-==========
+a - Base Image
+==============
 oc get is -n openshift   (imagestream)
 sudo docker search openshift --limit 100 | grep wildfly
 
-Build & Deploy App
-==================
+b - Build & Deploy App
+======================
 oc new-app openshift/wildfly-100-centos7:latest~<github URL> --name='insults'
 oc new-app openshift/wildfly-100-centos7:latest~https://github.com/thomaswetzler/insults-app.git --name='insults'
 oc logs -f bc/insults     (buildconfig)
@@ -37,8 +37,8 @@ oc expose service insults
 oc get routes
    oder Oberfläche
 
-Test Application
-================
+c - Test Application
+====================
 Webbrowser Internet
    URL aus oc get routes
 

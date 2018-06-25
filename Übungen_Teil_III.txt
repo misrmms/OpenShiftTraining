@@ -10,8 +10,8 @@
 5 - Scaling (optional)
 ======================
 
-Installation Jmeter
-===================
+a - Installation Jmeter
+=======================
 wget http://mirror.23media.de/apache/jmeter/binaries/apache-jmeter-4.0.tgz
 gzip -d apache-jmeter-4.0.tgz
 tar -xvf apache-jmeter-4.0.tar
@@ -21,8 +21,8 @@ sudo vi /etc/environment
 source /etc/environment
 Starten auf Konsole
 
-Autoscaling
-===========
+b - Autoscaling
+===============
 Oberfläche 
    Applications->Deployments->insults
        Configuration->autoscaling
@@ -30,9 +30,11 @@ Oberfläche
        #2 -> Roll Back
 
 
-
 6 - SelfHealing (optional)
 ==========================
+
+a - Listen Pods
+===============
 $ oc get pods
 NAME                           READY     STATUS      RESTARTS   AGE
 first-nodejs-example-1-35vx7   1/1       Running     0          2m
@@ -40,8 +42,13 @@ first-nodejs-example-1-59gyi   1/1       Running     0          4m
 first-nodejs-example-1-build   0/1       Completed   0          20h
 first-nodejs-example-1-n5ozj   1/1       Running     0          3m
 
+b - Löschen Pod
+===============
 $ oc delete pod first-nodejs-example-1-n5ozj
 pod "first-nodejs-example-1-n5ozj" deleted
+
+c - Ergebnis beobachten
+=======================
 $ oc get pods
 NAME                           READY     STATUS      RESTARTS   AGE
 first-nodejs-example-1-35vx7   1/1       Running     0          4m

@@ -10,8 +10,8 @@
 4 - Datenbank Pod hinzufügen
 ============================
 
-DB Pod hinzufügen
-=================
+a - DB Pod hinzufügen
+=====================
 Oberfläche
 -> Add to Project
 	Search "Postgresql"
@@ -24,14 +24,14 @@ PostgreSQL password		insult		The password for the user.
 PostgreSQL database name	insults		The name of the initial database that will be created.
 Volume Capacity			1Gi
 
-Assign DB to application
-========================
-oc env dc insults -e POSTGRESQL_USER=insult -e PGPASSWORD=insult -e POSTGRESQL_DATABASE=insults
+b - Assign DB to application
+============================
+oc env dc insults -e POSTGRESQL_USER=insult -e PGPASSWORD=insult -e POSTGRESQL_DATABASE=insults 
 oc env deploymentconfig insults -e POSTGRESQL_USER=insult -e PGPASSWORD=insult -e POSTGRESQL_DATABASE=insults
 
 
-Create Schema & Entries
-=======================
+c - Create Schema & Entries
+===========================
 oc get pods
 oc rsh <postgresql pod name>
 	cd /tmp
@@ -42,15 +42,15 @@ oc rsh <postgresql pod name>
 	select * from noun;
 	\q
 
-Änderung am Coding der Web Applikation
-======================================
+d - Änderung am Coding der Web Applikation
+==========================================
 Trainer wird neuen Branch im Git erstellen... 
 
-Redeploy
-========
+e - Redeploy
+============
 oc start-build insults
 
-Test Application
-================
+f - Test Application
+====================
 Webbrowser Internet
 
