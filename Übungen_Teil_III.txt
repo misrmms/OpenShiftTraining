@@ -1,0 +1,52 @@
++===============================================================================
++ Übungen Einführung OpenShift Teil III
++
++ T-Systems
++ PaaS Training 
++ Einführung in OpenShift
++
++===============================================================================
+
+5 - Scaling (optional)
+======================
+
+Installation Jmeter
+===================
+wget http://mirror.23media.de/apache/jmeter/binaries/apache-jmeter-4.0.tgz
+gzip -d apache-jmeter-4.0.tgz
+tar -xvf apache-jmeter-4.0.tar
+sudo apt-get install default-jre
+sudo vi /etc/environment
+    JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64/"
+source /etc/environment
+Starten auf Konsole
+
+Autoscaling
+===========
+Oberfläche 
+   Applications->Deployments->insults
+       Configuration->autoscaling
+   Applications->Deployments->insults
+       #2 -> Roll Back
+
+
+
+6 - SelfHealing (optional)
+==========================
+$ oc get pods
+NAME                           READY     STATUS      RESTARTS   AGE
+first-nodejs-example-1-35vx7   1/1       Running     0          2m
+first-nodejs-example-1-59gyi   1/1       Running     0          4m
+first-nodejs-example-1-build   0/1       Completed   0          20h
+first-nodejs-example-1-n5ozj   1/1       Running     0          3m
+
+$ oc delete pod first-nodejs-example-1-n5ozj
+pod "first-nodejs-example-1-n5ozj" deleted
+$ oc get pods
+NAME                           READY     STATUS      RESTARTS   AGE
+first-nodejs-example-1-35vx7   1/1       Running     0          4m
+first-nodejs-example-1-59gyi   1/1       Running     0          6m
+first-nodejs-example-1-build   0/1       Completed   0          20h
+first-nodejs-example-1-ezpn3   1/1       Running     0          34s
+
+

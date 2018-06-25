@@ -1,8 +1,12 @@
 +===============================================================================
-+ Übungen Einführung OpenShift 
++ Übungen Einführung OpenShift Teil IV
 +
 + T-Systems
 + PaaS Training 
 + Einführung in OpenShift
 +
 +===============================================================================
+
+7 - Delete all
+==============
+oc delete all --all

@@ -1,0 +1,56 @@
++===============================================================================
++ Übungen Einführung OpenShift Teil II
++
++ T-Systems
++ PaaS Training 
++ Einführung in OpenShift
++
++===============================================================================
+
+4 - Datenbank Pod hinzufügen
+============================
+
+DB Pod hinzufügen
+=================
+Oberfläche
+-> Add to Project
+	Search "Postgresql"
+	DBStorage -> Postgresql Persistant 
+Field Name			What to enter	Description
+Memory limit			512Mi		Since this is a small database, we only need 512 megabytes of memory.
+Database service name		postgresql	The name of the resulting OpenShift service.
+PostgreSQL user			insult		The username that has permission to use the database.
+PostgreSQL password		insult		The password for the user.
+PostgreSQL database name	insults		The name of the initial database that will be created.
+Volume Capacity			1Gi
+
+Assign DB to application
+========================
+oc env dc insults -e POSTGRESQL_USER=insult -e PGPASSWORD=insult -e POSTGRESQL_DATABASE=insults
+oc env deploymentconfig insults -e POSTGRESQL_USER=insult -e PGPASSWORD=insult -e POSTGRESQL_DATABASE=insults
+
+
+Create Schema & Entries
+=======================
+oc get pods
+oc rsh <postgresql pod name>
+	cd /tmp
+	curl https://raw.githubusercontent.com/thomaswetzler/insults-app/master/insults.sql > insults.sql
+	psql -h $POSTGRESQL_SERVICE_HOST -p $POSTGRESQL_SERVICE_PORT -U $POSTGRESQL_USER $POSTGRESQL_DATABASE < insults.sql	
+	psql insults
+	\dt
+	select * from noun;
+	\q
+
+Änderung am Coding der Web Applikation
+======================================
+Trainer wird neuen Branch im Git erstellen... 
+
+Redeploy
+========
+oc start-build insults
+
+Test Application
+================
+Webbrowser Internet
+
