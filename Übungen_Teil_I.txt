@@ -13,7 +13,7 @@ https://github.com/openshift/origin/releases/download/v3.9.0/openshift-origin-cl
 
 2 - Login to Appagile
 =====================
-URL: https://master-azp18.appagile.de/console/
+URL: https://master-azp18.appagile.de:8443/console/
     -> ? -> Command Line Tools
 oc login https://master-azp18.appagile.de:8443 --token=xlmAoTk7S4zYy4jsubDHD_m5brRsQvQ4RH2WMj_uP-Q
 oc new-project ex-insults-app --display-name="Elizabethan Insult Application"
