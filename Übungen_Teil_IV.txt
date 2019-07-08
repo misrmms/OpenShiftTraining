@@ -9,4 +9,4 @@
 
 7 - Delete all
 ==============
-oc delete all --all
+> oc delete all --all
