@@ -13,13 +13,13 @@
 a - Installation Jmeter
 =======================
 Linux Workstation
-   wget http://mirror.23media.de/apache/jmeter/binaries/apache-jmeter-4.0.tgz
-   gzip -d apache-jmeter-4.0.tgz
-   tar -xvf apache-jmeter-4.0.tar
-   sudo apt-get install default-jre
-   sudo vi /etc/environment
+   > wget http://mirror.23media.de/apache/jmeter/binaries/apache-jmeter-4.0.tgz
+   > gzip -d apache-jmeter-4.0.tgz
+   > tar -xvf apache-jmeter-4.0.tar
+   > sudo apt-get install default-jre
+   > sudo vi /etc/environment
       JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64/"
-   source /etc/environment
+   > source /etc/environment
 
 b - Resource Limits definieren
 ==============================
@@ -27,11 +27,12 @@ AppAgile Oberfläche
    -> Applications->Deployments
       -> insults
          -> Actions->Edit Resource Limits
-Field Name			What to enter	Description
-CPU Request			1 cores		The minimum amount of CPU the container is guaranteed.
-CPU Limit                       2 cores         The maximum amount of CPU the container is allowed to use when running.
-Memory Request                  1 MB            The minimum amThe maximum amount of memory the container is allowed to use when running.
-Memory Limit                    4 GB            The maximum amount of memory the container is allowed to use when running.
+Field Name                    | What to enter | Description
+------------------------------+---------------+--------------------------------------------------------------------------------------------
+CPU Request                   | 1 cores       | The minimum amount of CPU the container is guaranteed.
+CPU Limit                     | 2 cores       | The maximum amount of CPU the container is allowed to use when running.
+Memory Request                | 1 MB          | The minimum amThe maximum amount of memory the container is allowed to use when running.
+Memory Limit                  | 4 GB          | The maximum amount of memory the container is allowed to use when running.
 
 c - Autoscaler konfigurieren
 ============================
@@ -39,17 +40,20 @@ AppAgile Oberfläche
    -> Applications->Deployments
       -> insults
          -> Actions->Edit Autoscaler
+
 Field Name			What to enter	Description
-Min Pods			1 		The lower limit for the number of pods that can be set by the autoscaler. If not specified, defaults to 1.
-Max Pods                        5               The upper limit for the number of pods that can be set by the autoscaler.
-CPU Request Target              20 %            The percentage of the CPU request that each pod should ideally be using. 
+------------------------------+---------------+--------------------------------------------------------------------------
+Min Pods                      | 1             | The lower limit for the number of pods that can be set by the autoscaler. 
+                              |               | If not specified, defaults to 1.
+Max Pods                      | 5             | The upper limit for the number of pods that can be set by the autoscaler.
+CPU Request Target            | 20 %          | The percentage of the CPU request that each pod should ideally be using. 
 
 d - Jmeter aufrufen
 ===================
 Linux Workstation 
-   cd ~/apache-jmeter-4.0/bin
-   curl https://github.com/thomaswetzler/ https://raw.githubusercontent.com/thomaswetzler/OpenShiftTraining/blob/master/autoscaling.jmx > autoscaling.jmx
-   ./jmeter -n -t ./autoscaling.jmx -l ./results.jtl
+   > cd ~/apache-jmeter-4.0/bin
+   > curl https://github.com/thomaswetzler/ https://raw.githubusercontent.com/thomaswetzler/OpenShiftTraining/blob/master/autoscaling.jmx > autoscaling.jmx
+   > ./jmeter -n -t ./autoscaling.jmx -l ./results.jtl
  
 e - Ergebnis 
 ============
@@ -61,7 +65,7 @@ AppAgile Oberfläche
 
 a - Listen Pods
 ===============
-$ oc get pods
+> oc get pods
 NAME                           READY     STATUS      RESTARTS   AGE
 first-nodejs-example-1-35vx7   1/1       Running     0          2m
 first-nodejs-example-1-59gyi   1/1       Running     0          4m
@@ -70,12 +74,12 @@ first-nodejs-example-1-n5ozj   1/1       Running     0          3m
 
 b - Löschen Pod
 ===============
-$ oc delete pod first-nodejs-example-1-n5ozj
+> oc delete pod first-nodejs-example-1-n5ozj
 pod "first-nodejs-example-1-n5ozj" deleted
 
 c - Ergebnis beobachten
 =======================
-$ oc get pods
+> watch oc get pods
 NAME                           READY     STATUS      RESTARTS   AGE
 first-nodejs-example-1-35vx7   1/1       Running     0          4m
 first-nodejs-example-1-59gyi   1/1       Running     0          6m
