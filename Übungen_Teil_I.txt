@@ -9,33 +9,42 @@
 
 1 - Download OC Tools
 =====================
-https://github.com/openshift/origin/releases/download/v3.9.0/openshift-origin-client-tools-v3.9.0-191fece-linux-64bit.tar.gz
+> wget https://github.com/openshift/origin/releases/download/v3.9.0/openshift-origin-client-tools-v3.9.0-191fece-linux-64bit.tar.gz
+> tar -xvzf openshift-origin-client-tools-v3.9.0-191fece-linux-64bit.tar.gz
+> cd openshift-origin-client-tools-v3.9.0-191fece-linux-64bit
+> sudo cp oc /usr/local/bin
 
 2 - Login to Appagile
 =====================
-URL: https://master-azp18.appagile.de:8443/console/
-    -> ? -> Command Line Tools
-oc login https://master-azp18.appagile.de:8443 --token=xlmAoTk7S4zYy4jsubDHD_m5brRsQvQ4RH2WMj_uP-Q
-oc new-project ex-insults-app --display-name="Elizabethan Insult Application"
+URL: https://<AppAgile URL aus der Mail mit Logon>/console/
+    -> Auslesen des Login Commands aus dem Men¸ "Command Line Tools"
+Example: > oc login https://master-azp18.appagile.de:8443 --token=xlmAoTk7S4zYy4jsubDHD_m5brRsQvQ4RH2WMj_uP-Q
+Falls noch nicht ¸ber GUI geschehen, Projekt erzeugen:
+> oc new-project ex-insults-app --display-name="Team <No>"
 
 3 - Erste Web Anwendung
 =======================
 
-a - Base Image
-==============
-oc get is -n openshift   (imagestream)
-sudo docker search openshift --limit 100 | grep wildfly
+a - Auflisten aller gespeicherten Images
+========================================
+AppAgile 
+> oc get is -n openshift   (imagestream)
+Alle verf¸gbaren 
+> sudo docker search openshift --limit 100 | grep wildfly
 
-b - Build & Deploy App
-======================
-oc new-app openshift/wildfly-100-centos7:latest~<github URL> --name='insults'
-oc new-app openshift/wildfly-100-centos7:latest~https://github.com/thomaswetzler/insults-app.git --name='insults'
-oc logs -f bc/insults     (buildconfig)
-   oder Oberfl√§che: Builds -> insults -> #1 -> logs
-oc expose service insults
-   oder Oberfl‰che: Applications -> Services -> insults -> Actions -> Create Route
-oc get routes
-   oder Oberfl√§che
+b - Build & Deploy Java-App
+===========================
+Kommando zum Erzeugen und Starten einer S2I based App: oc new-app <S2I Image>~<github URL Source Code> --name='insults'
+> oc new-app openshift/wildfly-100-centos7:latest~https://github.com/thomaswetzler/insults-app.git --name='insults'
+Anzeigen der Build Ausgabe:
+> oc logs -f bc/insults     (buildconfig)
+  oder GUI: Builds -> insults -> #1 -> logs
+Erstellen des Service
+> oc expose svc insults (service)
+  oder GUI: Applications -> Services -> insults -> Actions -> Create Route
+Anzeigen der erzeugten Routen
+> oc get routes
+  oder GUI
 
 c - Test Application
 ====================

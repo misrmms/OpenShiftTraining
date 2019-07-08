@@ -12,43 +12,46 @@
 
 a - DB Pod hinzufügen
 =====================
-Oberfläche
+In der GUI aus dem "Catalog" das Image "Postgresql Persistant" auswählen.  
 -> Add to Project
 	Search "Postgresql"
 	DBStorage -> Postgresql Persistant 
-Field Name			What to enter	Description
-Memory limit			512Mi		Since this is a small database, we only need 512 megabytes of memory.
-Database service name		postgresql	The name of the resulting OpenShift service.
-PostgreSQL user			insult		The username that has permission to use the database.
-PostgreSQL password		insult		The password for the user.
-PostgreSQL database name	insults		The name of the initial database that will be created.
-Volume Capacity			1Gi
-
-b - Assign DB to application
-============================
-oc env dc insults -e POSTGRESQL_USER=insult -e PGPASSWORD=insult -e POSTGRESQL_DATABASE=insults 
-oc env deploymentconfig insults -e POSTGRESQL_USER=insult -e PGPASSWORD=insult -e POSTGRESQL_DATABASE=insults
+Folgende Werte sind einzugeben:
+Field Name                   |  What to enter | Description
+-----------------------------+----------------+----------------------------------------------------------------------
+Memory limit                 |  512Mi         | Since this is a small database, we only need 512 megabytes of memory.
+Database service name        |  postgresql    | The name of the resulting OpenShift service.
+PostgreSQL user              |  insult        | The username that has permission to use the database.
+PostgreSQL password          |  insult        | The password for the user.
+PostgreSQL database name     |  insultdb      | The name of the initial database that will be created.
+Volume Capacity              |  1Gi           |
 
 
-c - Create Schema & Entries
-===========================
-oc get pods
-oc rsh <postgresql pod name>
-	cd /tmp
-	curl https://raw.githubusercontent.com/thomaswetzler/insults-app/master/insults.sql > insults.sql
-	psql -h $POSTGRESQL_SERVICE_HOST -p $POSTGRESQL_SERVICE_PORT -U $POSTGRESQL_USER $POSTGRESQL_DATABASE < insults.sql	
-	psql insults
-	\dt
-	select * from noun;
-	\q
+
+b - Setzen der Environment Variablen in der "Insults"-JAVA Instanz 
+==================================================================
+> oc env dc insults -e POSTGRESQL_USER=insult -e PGPASSWORD=insult -e POSTGRESQL_DATABASE=insultdb (deploymentconfig)
+
+
+c - Create Schema & Entries (Antipattern!!!!)
+=============================================
+> oc get pods
+> oc rsh <postgresql pod name aus obigen command>
+	- cd /tmp
+	- curl https://raw.githubusercontent.com/thomaswetzler/insults-app/master/insults.sql > insults.sql
+	- psql -h $POSTGRESQL_SERVICE_HOST -p $POSTGRESQL_SERVICE_PORT -U $POSTGRESQL_USER $POSTGRESQL_DATABASE < insults.sql	
+	- psql insultdb
+	- \dt
+	- select * from noun;
+	- \q
 
 d - Änderung am Coding der Web Applikation
 ==========================================
 Trainer wird neuen Branch im Git erstellen... 
 
-e - Redeploy
-============
-oc start-build insults
+e - Redeploy der "Insults"-JAVA Instanz
+=======================================
+> oc start-build insults
 
 f - Test Application
 ====================
