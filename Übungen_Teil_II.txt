@@ -1,18 +1,18 @@
 +===============================================================================
-+ Übungen Einführung OpenShift Teil II
++ Ãœbungen EinfÃ¼hrung OpenShift Teil II
 +
 + T-Systems
 + PaaS Training 
-+ Einführung in OpenShift
++ EinfÃ¼hrung in OpenShift
 +
 +===============================================================================
 
-4 - Datenbank Pod hinzufügen
+4 - Datenbank Pod hinzufÃ¼gen
 ============================
 
-a - DB Pod hinzufügen
+a - DB Pod hinzufÃ¼gen
 =====================
-In der GUI aus dem "Catalog" das Image "Postgresql Persistant" auswählen.  
+In der GUI aus dem "Catalog" das Image "Postgresql Persistant" auswÃ¤hlen.  
 -> Add to Project
 	Search "Postgresql"
 	DBStorage -> Postgresql Persistant 
@@ -38,14 +38,14 @@ c - Create Schema & Entries (Antipattern!!!!)
 > oc get pods
 > oc rsh <postgresql pod name aus obigen command>
 	- cd /tmp
-	- curl https://raw.githubusercontent.com/thomaswetzler/insults-app/master/insults.sql > insults.sql
+	- curl https://raw.githubusercontent.com/misrmms/insults-app/master/insults.sql > insults.sql
 	- psql -h $POSTGRESQL_SERVICE_HOST -p $POSTGRESQL_SERVICE_PORT -U $POSTGRESQL_USER $POSTGRESQL_DATABASE < insults.sql	
 	- psql insultdb
 	- \dt
 	- select * from noun;
 	- \q
 
-d - Änderung am Coding der Web Applikation
+d - Ã„nderung am Coding der Web Applikation
 ==========================================
 Trainer wird neuen Branch im Git erstellen... 
 
