@@ -1,9 +1,9 @@
 +===============================================================================
-+ Übungen Einführung OpenShift Teil I
++ Ãœbungen EinfÃ¼hrung OpenShift Teil I
 +
 + T-Systems
 + PaaS Training 
-+ Einführung in OpenShift
++ EinfÃ¼hrung in OpenShift
 +
 +===============================================================================
 
@@ -17,9 +17,9 @@
 2 - Login to Appagile
 =====================
 URL: https://<AppAgile URL aus der Mail mit Logon>/console/
-    -> Auslesen des Login Commands aus dem Menü "Command Line Tools"
+    -> Auslesen des Login Commands aus dem MenÃ¼ "Command Line Tools"
 Example: > oc login https://master-azp18.appagile.de:8443 --token=xlmAoTk7S4zYy4jsubDHD_m5brRsQvQ4RH2WMj_uP-Q
-Falls noch nicht über GUI geschehen, Projekt erzeugen:
+Falls noch nicht Ã¼ber GUI geschehen, Projekt erzeugen:
 > oc new-project ex-insults-app --display-name="Team <No>"
 
 3 - Erste Web Anwendung
@@ -29,13 +29,13 @@ a - Auflisten aller gespeicherten Images
 ========================================
 AppAgile 
 > oc get is -n openshift   (imagestream)
-Alle verfügbaren 
+Alle verfÃ¼gbaren 
 > sudo docker search openshift --limit 100 | grep wildfly
 
 b - Build & Deploy Java-App
 ===========================
 Kommando zum Erzeugen und Starten einer S2I based App: oc new-app <S2I Image>~<github URL Source Code> --name='insults'
-> oc new-app openshift/wildfly-100-centos7:latest~https://github.com/thomaswetzler/insults-app.git --name='insults'
+> oc new-app openshift/wildfly-100-centos7:latest~https://github.com/misrmms/insults-app.git --name='insults'
 Anzeigen der Build Ausgabe:
 > oc logs -f bc/insults     (buildconfig)
   oder GUI: Builds -> insults -> #1 -> logs
